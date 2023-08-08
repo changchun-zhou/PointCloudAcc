@@ -384,9 +384,9 @@ always@(*) begin
         4'd0 : O_MonDat = O_CfgRdy  [0];
         4'd1 : O_MonDat = O_CfgRdy  [1];
         4'd2 : O_MonDat = O_CfgRdy  [2];
-        4'd3 : O_MonDat = O_CfgRdy  [3];
-        4'd4 : O_MonDat = O_CfgRdy  [4];
-        4'd5 : O_MonDat = O_CfgRdy  [5];
+        // 4'd3 : O_MonDat = O_CfgRdy  [3];
+        // 4'd4 : O_MonDat = O_CfgRdy  [4];
+        // 4'd5 : O_MonDat = O_CfgRdy  [5];
         4'd6 : O_MonDat = O_MonState[0];
         4'd7 : O_MonDat = O_MonState[1];
         4'd8 : O_MonDat = O_MonState[2];

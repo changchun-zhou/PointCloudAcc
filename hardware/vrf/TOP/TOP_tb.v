@@ -1,8 +1,8 @@
 `timescale  1 ns / 100 ps
 
-`define CLOCK_PERIOD 10 // Core clock: <= 1000/16=60 when PLL
+`define CLOCK_PERIOD 5 // Core clock: <= 1000/16=60 when PLL
 `define OFFCLOCK_PERIOD 100 // 
-// `define PLL
+`define PLL
 `define SIM
 // `define FUNC_SIM
 `define POST_SIM
@@ -19,7 +19,7 @@ module TOP_tb();
 parameter PORT_WIDTH        = 128   ;
 parameter ADDR_WIDTH        = 16    ;
 parameter DRAM_ADDR_WIDTH   = 32    ;
-parameter OPNUM             = 6     ;
+parameter OPNUM             = 3     ;
 parameter FBDIV_WIDTH    = 3;
 parameter FPSISA_WIDTH   = PORT_WIDTH*16;
 parameter KNNISA_WIDTH   = PORT_WIDTH*2;
@@ -35,11 +35,8 @@ parameter MONISA_WIDTH   = PORT_WIDTH*1;
 // parameter ISANUM[4]   = 18;
 // parameter ISANUM[5]   = 20;
 localparam [OPNUM -1 : 0][32 -1 : 0] ISANUM = {
-    32'd20, // MON
     32'd18, // GIC
-    32'd19, // POL
-    32'd65, // SYA
-    32'd32, // KNN
+    32'd32, // BLK
     32'd23  // FPS
 };
 
@@ -56,19 +53,13 @@ parameter MDUMONSUM_WIDTH  = CCUMON_WIDTH + GICMON_WIDTH + GLBMON_WIDTH + POLMON
 parameter TOPMON_WIDTH     = PORT_WIDTH*`CEIL(MDUMONSUM_WIDTH, PORT_WIDTH);
 
 localparam [OPNUM -1 : 0][DRAM_ADDR_WIDTH -1 : 0] ISABASEADDR = {
-    32'd0 + FPSISA_WIDTH/PORT_WIDTH*ISANUM[0] + KNNISA_WIDTH/PORT_WIDTH*ISANUM[1] + SYAISA_WIDTH/PORT_WIDTH*ISANUM[2] + POLISA_WIDTH/PORT_WIDTH*ISANUM[3] + GICISA_WIDTH/PORT_WIDTH*ISANUM[4],
-    32'd0 + FPSISA_WIDTH/PORT_WIDTH*ISANUM[0] + KNNISA_WIDTH/PORT_WIDTH*ISANUM[1] + SYAISA_WIDTH/PORT_WIDTH*ISANUM[2] + POLISA_WIDTH/PORT_WIDTH*ISANUM[3], //29
-    32'd0 + FPSISA_WIDTH/PORT_WIDTH*ISANUM[0] + KNNISA_WIDTH/PORT_WIDTH*ISANUM[1] + SYAISA_WIDTH/PORT_WIDTH*ISANUM[2], 
     32'd0 + FPSISA_WIDTH/PORT_WIDTH*ISANUM[0] + KNNISA_WIDTH/PORT_WIDTH*ISANUM[1], 
     32'd0 + FPSISA_WIDTH/PORT_WIDTH*ISANUM[0], 
     32'd0
 };
 
 localparam [OPNUM -1 : 0][32 -1 : 0] ISANUMWORD = {
-    MONISA_WIDTH/PORT_WIDTH,
     GICISA_WIDTH/PORT_WIDTH, 
-    POLISA_WIDTH/PORT_WIDTH, 
-    SYAISA_WIDTH/PORT_WIDTH, 
     KNNISA_WIDTH/PORT_WIDTH, 
     FPSISA_WIDTH/PORT_WIDTH
 };
@@ -112,9 +103,9 @@ wire                            O_PLLLock;
 reg [PORT_WIDTH         -1 : 0] Dram[0 : 2**18-1];
 wire[DRAM_ADDR_WIDTH    -1 : 0] DatAddr;
 
-reg [$clog2(OPNUM)      -1 : 0] ISAIdx;
-reg [$clog2(OPNUM)      -1 : 0] ISAIdx_tmp;
-reg [$clog2(OPNUM)      -1 : 0] ISAIdx_d;
+reg [4                  -1 : 0] ISAIdx;
+reg [4                  -1 : 0] ISAIdx_tmp;
+reg [4                  -1 : 0] ISAIdx_d;
 reg [32                 -1 : 0] ISADelay;
 wire[OPNUM  -1 : 0][ADDR_WIDTH  -1 : 0] ISAAddr;
 wire[OPNUM              -1 : 0] Overflow_ISA;
@@ -129,7 +120,6 @@ localparam ISASND       = 3'b001;
 localparam DATCMD       = 3'b011;
 localparam DATIN2CHIP   = 3'b100;
 localparam DATOUT2OFF   = 3'b101;
-
 
 reg [ 3     -1 : 0] state       ;
 reg [ 3     -1 : 0] next_state  ;
@@ -146,7 +136,10 @@ initial begin
     I_SysClk = 1;
     @(posedge I_OffClk); // wait I_FBDIV
     `ifdef PLL
-        forever #(`CLOCK_PERIOD*{I_FBDIV, 5'd0}/2)   I_SysClk=~I_SysClk;
+        if(!I_BypPLL)
+            forever #(`CLOCK_PERIOD*{I_FBDIV, 5'd0}/2)   I_SysClk=~I_SysClk;
+        else
+            forever #(`CLOCK_PERIOD/2)  I_SysClk=~I_SysClk;
     `else
         forever #(`CLOCK_PERIOD/2)  I_SysClk=~I_SysClk;
     `endif
@@ -159,12 +152,12 @@ initial begin
 end
 
 initial begin
-    I_BypAsysnFIFO  = 1'b1;
+    I_BypAsysnFIFO  = 1'b0;
     I_BypOE         = 1'b0;
     I_OffOE         = 1'b0;
     I_SwClk         = 1'b0;
-    I_BypPLL        = 1'b1;
-    I_FBDIV         = 3'd7;
+    I_BypPLL        = 1'b0;
+    I_FBDIV         = 3'd1;
     I_MonSel        = 4'd0;
 
     @(posedge rst_n);
@@ -220,14 +213,14 @@ begin
         // $stop;
         ISAIdx  = ISA_Serial[cntISA][0 +:  4]; // Low 4 bit ISA
         ISADelay= ISA_Serial[cntISA][4 +: 32];// High 32 bit Delay
-        if (ISAIdx <= 5) // Valid ISA
+        if (ISAIdx <= OPNUM -1) // Valid ISA
             wait (state == ISASND);
 
         // Delay
         ISAIdx = 6; // DO NOT DELETE!
         ISAIdx_tmp = ISAIdx;
-        // repeat(ISADelay) @(posedge u_TOP.clk);
-        repeat(ISADelay) @(posedge O_SysClk);
+        repeat(ISADelay) @(posedge u_TOP.clk);
+        // repeat(ISADelay) @(posedge O_SysClk);
         ISAIdx = ISAIdx_tmp;
         cntISA = cntISA + 1;
     end
@@ -248,7 +241,7 @@ end
 
 `ifdef POST_SIM
     initial begin 
-        $sdf_annotate ("/workspace/home/zhoucc/Proj_HW/PointCloudAcc/hardware/work/postend/Date230728_0509_Periodclk3.3_Periodsck10_PLL1_group_Track3vt_MaxDynPwr0_OptWgt0.5_Note_FROZEN_V9_NOPLL/TOP.sdf", u_TOP, , "TOP_sdf.log", "MAXIMUM", "1.0:1.0:1.0", "FROM_MAXIMUM");
+        $sdf_annotate ("/workspace/home/zhoucc/Proj_HW/PointCloudAcc/hardware/work/synth/TOP/Date230805_0220_Periodclk5_Periodsck10_PLL1_group_Track3vt_MaxDynPwr0_OptWgt0.5_Note_FPS_FROZEN_V9_PLL&REDUCEPAD/gate/TOP.sdf", u_TOP, , "TOP_sdf.log", "MAXIMUM", "1.0:1.0:1.0", "FROM_MAXIMUM");
     end 
 
     reg EnTcf;
@@ -261,7 +254,7 @@ end
 //=====================================================================================================================
 // Logic Design 1: FSM=ITF
 //=====================================================================================================================
-assign IsaSndEn = (!O_CmdVld & !O_DatVld) & u_TOP.u_ITF.O_CfgRdy[4] & u_TOP.u_ITF.O_CfgRdy[5]; // No output & No GIC and MON;
+assign IsaSndEn = (!O_CmdVld & !O_DatVld) & u_TOP.u_ITF.O_CfgRdy[2]; // No output & No GIC and MON;
 always @(*) begin
     case ( state )
         IDLE:   if ( TrigLoop )
@@ -270,7 +263,7 @@ always @(*) begin
                     next_state <= DATCMD;
                 else if (O_DatVld ) // !CmdVld: MonDat
                     next_state <= DATOUT2OFF;
-                else if ( IsaSndEn & ISAIdx <= 5 )
+                else if ( IsaSndEn & ISAIdx <= OPNUM -1 )
                     next_state <= ISASND;
                 else
                     next_state <= IDLE;
@@ -436,7 +429,7 @@ TOP u_TOP (
         .I_FBDIV_PAD        ( I_FBDIV       ),
         .O_PLLLock_PAD      ( O_PLLLock     ), 
     `endif
-    .O_SysClk_PAD       ( O_SysClk      ),
+    // .O_SysClk_PAD       ( O_SysClk      ),
     // .O_OffClk_PAD       ( O_OffClk      ),
     // .O_CfgRdy_PAD       ( O_CfgRdy      ),
     // .O_MonState_PAD     (               ),
@@ -450,9 +443,9 @@ TOP u_TOP (
     .I_DatRdy_PAD       ( I_DatRdy      ),
     .I_ISAVld_PAD       ( I_ISAVld      ),
     .O_CmdVld_PAD       ( O_CmdVld      ),
-    .IO_Dat_PAD         ( IO_Dat        )
-    // .I_MonSel_PAD       ( I_MonSel      ),
-    // .O_MonDat_PAD       ( O_MonDat      )
+    .IO_Dat_PAD         ( IO_Dat        ),
+    .I_MonSel_PAD       ( I_MonSel      ),
+    .O_MonDat_PAD       ( O_MonDat      )
 );
 
 endmodule

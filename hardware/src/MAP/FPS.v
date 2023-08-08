@@ -72,9 +72,7 @@ module FPS #(
     output [IDX_WIDTH                   -1 : 0] FPSGLB_IdxWrAddr        ,
     output [SRAM_WIDTH                  -1 : 0] FPSGLB_IdxWrDat         ,   
     output                                      FPSGLB_IdxWrDatVld      ,
-    input                                       GLBFPS_IdxWrDatRdy      ,
-
-    output [FPSMON_WIDTH                -1 : 0] FPSMON_Dat              
+    input                                       GLBFPS_IdxWrDatRdy                
 
 );
 
@@ -1080,22 +1078,6 @@ generate
 
 endgenerate
 
-//=====================================================================================================================
-// Logic Design: Monitor
-//=====================================================================================================================
-assign #0.2 FPSMON_Dat = {
-    CCUFPS_CfgInfo,
-    CCUFPS_CfgVld,
-    FPSCCU_CfgRdy,
-    ArbFPCIdxWrIdx, 
-    ArbFPCMaskWrIdx, 
-    ArbFPCMaskRdIdx_d, 
-    ArbFPCDistWrIdx, 
-    ArbFPCDistRdIdx_d, 
-    ArbFPCCrdWrIdx, 
-    ArbFPCCrdRdIdx_d, // 4*7
-    state
-};
 
 //=====================================================================================================================
 // Logic Design: Statistic

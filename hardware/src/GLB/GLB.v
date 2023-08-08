@@ -44,9 +44,7 @@ module GLB #(
     output [NUM_RDPORT              -1 : 0][SRAM_WIDTH          -1 : 0] GLBTOP_RdPortDat    ,
     output [NUM_RDPORT                                          -1 : 0] GLBTOP_RdPortDatVld ,
     input  [NUM_RDPORT                                          -1 : 0] TOPGLB_RdPortDatRdy ,
-    output [NUM_RDPORT                                          -1 : 0] GLBTOP_RdEmpty      ,
-
-    output [GLBMON_WIDTH                                        -1 : 0] GLBMON_Dat            
+    output [NUM_RDPORT                                          -1 : 0] GLBTOP_RdEmpty                
 );
 
 //=====================================================================================================================
@@ -315,22 +313,6 @@ generate
 
     end
 endgenerate
-
-//=====================================================================================================================
-// Logic Design: Monitor
-//=====================================================================================================================
-assign #0.2 GLBMON_Dat = {
-    TOPGLB_WrPortDatVld ,
-    GLBTOP_WrPortDatRdy ,
-    GLBTOP_WrFull       ,   
-    TOPGLB_RdPortAddrVld,
-    GLBTOP_RdPortAddrRdy,
-    GLBTOP_RdPortDatVld ,
-    TOPGLB_RdPortDatRdy ,
-    GLBTOP_RdEmpty      ,
-    TOPGLB_CfgPortOffEmptyFull, // 16*9
-    TOPGLB_CfgPortBankFlag // 32*32
- };
 
 
 endmodule

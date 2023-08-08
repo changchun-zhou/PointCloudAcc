@@ -1,7 +1,7 @@
 #!/bin/csh
 # terminal: csh run
 
-irun -gui -fsmdebug -access +rwc -sv -64bit -ALLOWREDEFINITION +nctimescale+1ns/100ps +override_timescale -f ./PostSim.f -l ./log/irun.log -input test.tcl  
+irun -gui -fsmdebug -access +rwc -sv -64bit -ALLOWREDEFINITION +nctimescale+1ns/100ps +override_timescale +ncno_notifier -f ./PostSim.f -l ./log/irun.log -input test.tcl  
 
 
 

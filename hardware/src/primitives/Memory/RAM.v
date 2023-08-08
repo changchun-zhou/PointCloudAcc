@@ -80,13 +80,13 @@ module RAM #(
 
     `define RTSELDB
     generate
-        if( SRAM_WORD == 128 && SRAM_BIT == 256 && SRAM_BYTE == 1 && DUAL_PORT == 0)begin
+        if( SRAM_WORD == 32 && SRAM_BIT == 256 && SRAM_BYTE == 1 && DUAL_PORT == 0)begin
             `ifdef RTSELDB
                 assign #(DELAY) RTSEL= 2'b10;
             `else
                 assign #(DELAY) RTSEL= 2'b00;
             `endif
-            TS1N28HPCPUHDHVTB128X256M1SSO GLB_BANK(
+            TS1N28HPCPUHDHVTB32X256M1SSO GLB_BANK(
             .SLP    ( 1'b0  ),
             .SD     ( 1'b0  ),
             .CLK    ( clk   ),

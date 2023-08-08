@@ -16,7 +16,7 @@ set PLL="1"
 set UNGROUP="group"
 set MAXPOWER="0" # 100MHz -> 100mW
 set OPTWGT="0.5" # Larger optimization weight, lower leakage(1/20~1/10 of Total Synth Power)
-set NOTE="SDC_FROZEN_V9_PLL&REDUCEPAD"
+set NOTE="FPS_V9_PLL&REDUCEPAD"
 set SDC_FILE=./TOP.sdc
 
 ################################################################################

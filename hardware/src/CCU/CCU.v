@@ -68,24 +68,9 @@ module CCU #(
     input   [NUM_FPC                -1 : 0] FPSCCU_CfgRdy       ,   
     output [FPSISA_WIDTH            -1 : 0] CCUFPS_CfgInfo      ,     
 
-    output                                  CCUKNN_CfgVld       ,
-    input                                   KNNCCU_CfgRdy       ,  
-    output [KNNISA_WIDTH            -1 : 0] CCUKNN_CfgInfo      ,        
-
-    output                                  CCUSYA_CfgVld       ,
-    input                                   SYACCU_CfgRdy       ,
-    output [SYAISA_WIDTH            -1 : 0] CCUSYA_CfgInfo      , 
-
-    output  [POOL_CORE              -1 : 0] CCUPOL_CfgVld       ,
-    input   [POOL_CORE              -1 : 0] POLCCU_CfgRdy       ,
-    output  [POLISA_WIDTH           -1 : 0] CCUPOL_CfgInfo      , 
-
-    output                                  CCUMON_CfgVld       ,
-    input                                   MONCCU_CfgRdy       ,  
-    output [MONISA_WIDTH            -1 : 0] CCUMON_CfgInfo      ,
-
-    output [CCUMON_WIDTH            -1 : 0] CCUMON_Dat               
-
+    output                                  CCUBLK_CfgVld       ,
+    input                                   BLKCCU_CfgRdy       ,  
+    output [KNNISA_WIDTH            -1 : 0] CCUBLK_CfgInfo       
 );
 //=====================================================================================================================
 // Constant Definition :
@@ -98,18 +83,12 @@ localparam RECV         = 2'b01; // Receive
 localparam REFN         = 2'b10; // Receive Finish
 
 localparam [OPNUM    -1 : 0][16  -1 : 0] ISA_WIDTH = {
-    MONISA_WIDTH[0 +: 16],
     GICISA_WIDTH[0 +: 16], 
-    POLISA_WIDTH[0 +: 16], 
-    SYAISA_WIDTH[0 +: 16], 
     KNNISA_WIDTH[0 +: 16], 
     FPSISA_WIDTH[0 +: 16]
 };
 localparam [OPNUM    -1 : 0][8   -1 : 0] ISAFIFO_ADDR_WIDTH = {
-    MONISAFIFO_ADDR_WIDTH[0 +: 8],
     GICISAFIFO_ADDR_WIDTH[0 +: 8], 
-    POLISAFIFO_ADDR_WIDTH[0 +: 8], 
-    SYAISAFIFO_ADDR_WIDTH[0 +: 8], 
     KNNISAFIFO_ADDR_WIDTH[0 +: 8], 
     FPSISAFIFO_ADDR_WIDTH[0 +: 8]
 };
@@ -169,13 +148,12 @@ end
 assign CCUITF_ISARdDatRdy   = state == RECV & next_state == RECV; // SIPO Ready
 
 assign CCUITF_CfgRdy= cfgRdy;
-assign cfgRdy       = {MONCCU_CfgRdy, GICCCU_CfgRdy, &POLCCU_CfgRdy, SYACCU_CfgRdy, KNNCCU_CfgRdy, &FPSCCU_CfgRdy};
+assign cfgRdy       = {GICCCU_CfgRdy,BLKCCU_CfgRdy, &FPSCCU_CfgRdy};
 
-assign CCUITF_MonState = {|POLCCU_CfgRdy, |FPSCCU_CfgRdy, state};
+assign CCUITF_MonState = {|FPSCCU_CfgRdy, state};
 
-assign {CCUMON_CfgVld, CCUGIC_CfgVld, POL_CfgVld, CCUSYA_CfgVld, CCUKNN_CfgVld, FPS_CfgVld} = cfgVld;
+assign {CCUGIC_CfgVld,CCUBLK_CfgVld, FPS_CfgVld} = cfgVld;
 assign CCUFPS_CfgVld = {NUM_FPC{FPS_CfgVld}};
-assign CCUPOL_CfgVld = {POOL_CORE{POL_CfgVld}};
 
 //=====================================================================================================================
 // Logic Design: s2
@@ -264,18 +242,7 @@ generate
 endgenerate
 
 assign CCUFPS_CfgInfo = cfgInfo[0];
-assign CCUKNN_CfgInfo = cfgInfo[1];
-assign CCUSYA_CfgInfo = cfgInfo[2];
-assign CCUPOL_CfgInfo = cfgInfo[3];
-assign CCUGIC_CfgInfo = cfgInfo[4];
-assign CCUMON_CfgInfo = cfgInfo[5];
-
-assign CCUMON_Dat = {
-    ITFCCU_ISARdDat,
-    CCUITF_CfgRdy,          
-    ITFCCU_ISARdDatVld, 
-    ITFCCU_ISARdDatLast,
-    CCUITF_ISARdDatRdy 
-};
+assign CCUBLK_CfgInfo = cfgInfo[1];
+assign CCUGIC_CfgInfo = cfgInfo[2];
 
 endmodule

@@ -33,19 +33,19 @@ set_attribute interconnect_mode ple
 
 # read tcf file for power estimation:
 
- read_tcf -tcf_instance $TCF_INST $TCF_DUMP
+read_tcf -instance $INST -tcf_instance $TCF_INST $TCF_DUMP
 # read_vcd -instance TS3D -vcd_module top.TS3D_U ../sim_power_vcd/ASIC.vcd
 # write reports:
 
-report gates            > ${SYNTH_PROJDIR}/report/${NOTE}/${DESIGN}.gates
-report power            > ${SYNTH_PROJDIR}/report/${NOTE}/${DESIGN}.power
-report power -depth 1   > ${SYNTH_PROJDIR}/report/${NOTE}/${DESIGN}.power_depth1.rpt
-report power -depth 2   > ${SYNTH_PROJDIR}/report/${NOTE}/${DESIGN}.power_depth2.rpt
-report power -depth 3   > ${SYNTH_PROJDIR}/report/${NOTE}/${DESIGN}.power_depth3.rpt
-report power -depth 4   > ${SYNTH_PROJDIR}/report/${NOTE}/${DESIGN}.power_depth4.rpt
-report power -depth 5   > ${SYNTH_PROJDIR}/report/${NOTE}/${DESIGN}.power_depth5.rpt
-report power -depth 6   > ${SYNTH_PROJDIR}/report/${NOTE}/${DESIGN}.power_depth6.rpt
-report summary          > ${SYNTH_PROJDIR}/report/${NOTE}/${DESIGN}.summary
+report gates            > ${SYNTH_PROJDIR}/report/${NOTE}/${INST}.gates
+report power            > ${SYNTH_PROJDIR}/report/${NOTE}/${INST}.power
+report power -depth 1   > ${SYNTH_PROJDIR}/report/${NOTE}/${INST}.power_depth1.rpt
+report power -depth 2   > ${SYNTH_PROJDIR}/report/${NOTE}/${INST}.power_depth2.rpt
+report power -depth 3   > ${SYNTH_PROJDIR}/report/${NOTE}/${INST}.power_depth3.rpt
+report power -depth 4   > ${SYNTH_PROJDIR}/report/${NOTE}/${INST}.power_depth4.rpt
+report power -depth 5   > ${SYNTH_PROJDIR}/report/${NOTE}/${INST}.power_depth5.rpt
+report power -depth 6   > ${SYNTH_PROJDIR}/report/${NOTE}/${INST}.power_depth6.rpt
+report summary          > ${SYNTH_PROJDIR}/report/${NOTE}/${INST}.summary
 
 
 puts "The RUNTIME is [get_attr runtime /] seconds"

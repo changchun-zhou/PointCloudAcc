@@ -51,9 +51,7 @@ module GIC #(
     output [SRAM_WIDTH                          -1 : 0] GICGLB_WrDat     , 
     output                                              GICGLB_WrDatVld  , 
     input                                               GLBGIC_WrDatRdy  ,
-    input                                               GLBGIC_WrFull    ,
-
-    output [GICMON_WIDTH                        -1 : 0] GICMON_Dat        
+    input                                               GLBGIC_WrFull        
 
 );
 //=====================================================================================================================
@@ -270,30 +268,5 @@ counter#(
 wire Debug_IO_Uti;
 assign Debug_IO_Uti = (GICITF_DatVld & ITFGIC_DatRdy) | (ITFGIC_DatVld & GICITF_DatRdy);
 
-//=====================================================================================================================
-// Logic Design : Monitor
-//=====================================================================================================================
-assign GICMON_Dat = {
-    CCUGIC_CfgInfo  ,
-    CCUGIC_CfgVld   ,
-    GICCCU_CfgRdy   , 
-    GICITF_CmdVld   ,
-    GICITF_DatVld   ,
-    GICITF_DatLast  ,
-    ITFGIC_DatRdy   ,
-    ITFGIC_DatVld   ,
-    ITFGIC_DatLast  ,
-    GICITF_DatRdy   ,
-    GICGLB_RdAddrVld,
-    GLBGIC_RdAddrRdy,
-    GLBGIC_RdDatVld ,
-    GICGLB_RdDatRdy ,
-    GLBGIC_RdEmpty  ,
-    GICGLB_WrDatVld , 
-    GLBGIC_WrDatRdy ,
-    GLBGIC_WrFull   ,
-    CntGLBAddr      ,
-    state           
-};
 
 endmodule
