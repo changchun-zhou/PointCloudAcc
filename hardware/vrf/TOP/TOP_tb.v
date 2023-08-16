@@ -156,7 +156,7 @@ initial begin
     I_BypOE         = 1'b0;
     I_OffOE         = 1'b0;
     I_SwClk         = 1'b0;
-    I_BypPLL        = 1'b0;
+    I_BypPLL        = 1'b1;
     I_FBDIV         = 3'd1;
     I_MonSel        = 4'd0;
 
@@ -186,6 +186,12 @@ initial begin
     $shm_probe(TOP_tb.u_TOP, "AS");
 end
 
+initial
+
+begin
+    $dumpfile("../../work/synth/TOP/Date230805_0220_Periodclk5_Periodsck10_PLL1_group_Track3vt_MaxDynPwr0_OptWgt0.5_Note_FPS_FROZEN_V9_PLL&REDUCEPAD/dump/vcd_period5_range1000clks_InitialBeginOnlyGIC.vcd");
+    $dumpvars(0,TOP_tb.u_TOP);
+end
 
 reg [16     -1 : 0] cntISA;
 reg                 TrigLoop;

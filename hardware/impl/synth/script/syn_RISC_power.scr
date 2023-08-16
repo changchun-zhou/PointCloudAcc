@@ -6,7 +6,6 @@
 source -verbose ./config_temp.tcl
 
 set DESIGN $DESIGN_NAME
-set clk $clk
 
 #set_attribute hdl_language       vhdl
 set_attr hdl_search_path ./p+r_enc
@@ -33,8 +32,9 @@ set_attribute interconnect_mode ple
 
 # read tcf file for power estimation:
 
-read_tcf -instance $INST -tcf_instance $TCF_INST $TCF_DUMP
-# read_vcd -instance TS3D -vcd_module top.TS3D_U ../sim_power_vcd/ASIC.vcd
+# read_tcf $TCF_DUMP
+# read_vcd -instance $INST -vcd_module $TCF_INST $TCF_DUMP
+read_vcd -activity_profile -start_time 1300000 -end_time 30000000 -vcd_module $TCF_INST $TCF_DUMP
 # write reports:
 
 report gates            > ${SYNTH_PROJDIR}/report/${NOTE}/${INST}.gates
