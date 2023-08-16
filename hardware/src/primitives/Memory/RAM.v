@@ -99,6 +99,25 @@ module RAM #(
             .Q      ( DO    )
             );
         end
+        else if( SRAM_WORD == 64 && SRAM_BIT == 256 && SRAM_BYTE == 1 && DUAL_PORT == 0)begin
+            `ifdef RTSELDB
+                assign #(DELAY) RTSEL= 2'b10;
+            `else
+                assign #(DELAY) RTSEL= 2'b00;
+            `endif
+            TS1N28HPCPUHDHVTB64X256M1SSO GLB_BANK(
+            .SLP    ( 1'b0  ),
+            .SD     ( 1'b0  ),
+            .CLK    ( clk   ),
+            .CEB    ( CSB   ),
+            .WEB    ( WEB   ),
+            .A      ( (&WEB)? AR : AW ),
+            .D      ( DI    ),
+            .RTSEL  ( RTSEL ),
+            .WTSEL  ( WTSEL ),
+            .Q      ( DO    )
+            );
+        end
         else if( SRAM_WORD == 256 && SRAM_BIT == 8 && SRAM_BYTE == 1 && DUAL_PORT == 0)begin
             assign #(DELAY) RTSEL= 2'b00;
             TS1N28HPCPUHDHVTB256X8M4SSO SHF_SPRAM(

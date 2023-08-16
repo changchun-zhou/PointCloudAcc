@@ -20,9 +20,9 @@ module TOP #(
     // HW-Modules
 
     // FPS
-    parameter NUM_FPC        = 16, 
-    parameter NUMSRAM_RDCRD  = 2,
-    parameter NUMSRAM_DIST   = 2,
+    parameter NUM_FPC        = 8, 
+    parameter NUMSRAM_RDCRD  = 1, // NUM_FPC/8
+    parameter NUMSRAM_DIST   = 1, // NUM_FPC/8
     parameter NUMMASK_PROC   = 64, // Reduce BW and Combinational Area
     
     // KNN
@@ -32,7 +32,7 @@ module TOP #(
 
     // ITF
     parameter PORT_WIDTH     = 128, 
-    parameter DRAM_ADDR_WIDTH= 32, 
+    parameter DRAM_ADDR_WIDTH= 32,
     parameter ASYNC_FIFO_ADDR_WIDTH = 4, // 200MHz -> 5MHz
     parameter FBDIV_WIDTH    = 3,
 
@@ -40,8 +40,8 @@ module TOP #(
     parameter SRAM_WIDTH     = 256, 
     parameter SRAM_WORD      = 1024/NUM_FPC/2, // P/Core/2
     parameter ADDR_WIDTH     = 16,
-    parameter GLB_NUM_RDPORT = 7,
-    parameter GLB_NUM_WRPORT = 7, 
+    parameter GLB_NUM_RDPORT = 5,
+    parameter GLB_NUM_WRPORT = 6, 
     parameter NUM_BANK       = NUM_FPC/2, // 32B*Core/2
 
     // CCU
@@ -116,15 +116,15 @@ module TOP #(
 localparam GLBWRIDX_GICGLB = 0; 
 localparam GLBWRIDX_FPSMSK = 1; 
 localparam GLBWRIDX_FPSCRD = 2; 
-localparam GLBWRIDX_FPSDST = 3; // 2 SRAM BW 
-localparam GLBWRIDX_FPSIDX = 5; 
-localparam GLBWRIDX_BLKCRD = 6;
+localparam GLBWRIDX_FPSDST = 3; 
+localparam GLBWRIDX_FPSIDX = 4; 
+localparam GLBWRIDX_BLKCRD = 5;
 
 localparam GLBRDIDX_GICGLB = 0; 
 localparam GLBRDIDX_FPSMSK = 1; 
-localparam GLBRDIDX_FPSCRD = 2; // 2 SRAM BW
-localparam GLBRDIDX_FPSDST = 4; // 2 SRAM BW
-localparam GLBRDIDX_BLKCRD = 6;
+localparam GLBRDIDX_FPSCRD = 2; 
+localparam GLBRDIDX_FPSDST = 3; 
+localparam GLBRDIDX_BLKCRD = 4;
 
 localparam DISTSQR_WIDTH     = CRD_WIDTH*2 + $clog2(CRD_DIM);
 //=====================================================================================================================

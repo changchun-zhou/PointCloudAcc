@@ -53,6 +53,7 @@
 ../../project/lib/mem/ts1n28hpcpuhdhvtb16x8m2sso_170a/VERILOG/ts1n28hpcpuhdhvtb16x8m2sso_170a_tt0p9v25c.v
 ../../project/lib/mem/ts1n28hpcpuhdhvtb256x8m4sso_170a/VERILOG/ts1n28hpcpuhdhvtb256x8m4sso_170a_tt0p9v25c.v
 ../../project/lib/mem/ts1n28hpcpuhdhvtb32x256m1sso_170a/VERILOG/ts1n28hpcpuhdhvtb32x256m1sso_170a_tt0p9v25c.v
+../../project/lib/mem/ts1n28hpcpuhdhvtb64x256m1sso_170a/VERILOG/ts1n28hpcpuhdhvtb64x256m1sso_170a_tt0p9v25c.v
 ../../project/lib/mem/tsdn28hpcpuhdb32x128m4m_170a/VERILOG/tsdn28hpcpuhdb32x128m4m_170a_tt0p9v25c.v
 ../../project/lib/mem/tsdn28hpcpuhdb256x10m4m_170a/VERILOG/tsdn28hpcpuhdb256x10m4m_170a_tt0p9v25c.v
 /materials/technology/tsmc28/TSMC_28_IP/STD_IO/tphn28hpcpgv18_170d/tphn28hpcpgv18_110a_vlg/digital/Front_End/verilog/tphn28hpcpgv18_110a/tphn28hpcpgv18.v
