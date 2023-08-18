@@ -1,4 +1,17 @@
-// This is a simple example.
+
+
+
+
+
+
+
+
+
+
+
+
+
+/ This is a simple example.
 // You can make a your own header file and set its path to settings.
 // (Preferences > Package Settings > Verilog Gadget > Settings - User)
 //
@@ -20,7 +33,7 @@ module TOP #(
     // HW-Modules
 
     // FPS
-    parameter NUM_FPC        = 8, 
+    parameter NUM_FPC        = 4, 
     parameter NUMSRAM_RDCRD  = 1, // NUM_FPC/8
     parameter NUMSRAM_DIST   = 1, // NUM_FPC/8
     parameter NUMMASK_PROC   = 64, // Reduce BW and Combinational Area

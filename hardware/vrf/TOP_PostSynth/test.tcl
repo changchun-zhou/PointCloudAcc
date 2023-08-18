@@ -18,5 +18,6 @@ run 100
 # force TOP_tb.u_TOP.u_GLB.@{\GEN_BANK[15].u_SPRAM_HS }.u_RAM.@{\genblk1.GLB_BANK }.RTSEL_i = 2'b10;
 
 # dumptcf -scope TOP_tb.u_TOP -output tcf_period10_0703.dump -overwrite
+# dumptcf -scope TOP_tb.u_TOP -output ../../work/synth/TOP/Date230817_2034_Periodclk5_Periodsck10_PLL1_group_Track3vt_MaxDynPwr0_OptWgt0.5_Note_FPS_V9_PLL&REDUCEPAD_4Cores/dump/tcf_period5_range10000clks_instance_u_TOP_actFPS1cfg256cp128lp.dump -overwrite
 # run
 # dumptcf -end

@@ -186,12 +186,10 @@ initial begin
     $shm_probe(TOP_tb.u_TOP, "AS");
 end
 
-initial
-
-begin
-    $dumpfile("../../work/synth/TOP/Date230805_0220_Periodclk5_Periodsck10_PLL1_group_Track3vt_MaxDynPwr0_OptWgt0.5_Note_FPS_FROZEN_V9_PLL&REDUCEPAD/dump/vcd_period5_range1000clks_InitialBeginOnlyGIC.vcd");
-    $dumpvars(0,TOP_tb.u_TOP);
-end
+// initial begin
+//     $dumpfile("../../work/synth/TOP/Date230817_0105_Periodclk5_Periodsck10_PLL1_group_Track3vt_MaxDynPwr0_OptWgt0.5_Note_FPS_V9_PLL&REDUCEPAD_8Cores/dump/vcd_period5_range1000clks_InitialBegin.vcd");
+//     $dumpvars(0,TOP_tb.u_TOP);
+// end
 
 reg [16     -1 : 0] cntISA;
 reg                 TrigLoop;
@@ -247,13 +245,8 @@ end
 
 `ifdef POST_SIM
     initial begin 
-        $sdf_annotate ("/workspace/home/zhoucc/Proj_HW/PointCloudAcc/hardware/work/synth/TOP/Date230805_0220_Periodclk5_Periodsck10_PLL1_group_Track3vt_MaxDynPwr0_OptWgt0.5_Note_FPS_FROZEN_V9_PLL&REDUCEPAD/gate/TOP.sdf", u_TOP, , "TOP_sdf.log", "MAXIMUM", "1.0:1.0:1.0", "FROM_MAXIMUM");
+        $sdf_annotate ("/workspace/home/zhoucc/Proj_HW/PointCloudAcc/hardware/work/synth/TOP/Date230817_2034_Periodclk5_Periodsck10_PLL1_group_Track3vt_MaxDynPwr0_OptWgt0.5_Note_FPS_V9_PLL&REDUCEPAD_4Cores/gate/TOP.sdf", u_TOP, , "TOP_sdf.log", "MAXIMUM", "1.0:1.0:1.0", "FROM_MAXIMUM");
     end 
-
-    reg EnTcf;
-    initial begin
-        EnTcf = 1'b0;
-    end
 `endif
 
 

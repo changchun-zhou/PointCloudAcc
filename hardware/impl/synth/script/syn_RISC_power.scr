@@ -32,9 +32,10 @@ set_attribute interconnect_mode ple
 
 # read tcf file for power estimation:
 
-# read_tcf $TCF_DUMP
+read_tcf -tcf_instance $TCF_INST $TCF_DUMP
 # read_vcd -instance $INST -vcd_module $TCF_INST $TCF_DUMP
-read_vcd -activity_profile -start_time 1300000 -end_time 30000000 -vcd_module $TCF_INST $TCF_DUMP
+# read_vcd -activity_profile -start_time 100000000 -end_time 101000000 -vcd_module $TCF_INST $TCF_DUMP
+# ps
 # write reports:
 
 report gates            > ${SYNTH_PROJDIR}/report/${NOTE}/${INST}.gates
