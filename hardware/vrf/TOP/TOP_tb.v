@@ -1,7 +1,7 @@
 `timescale  1 ns / 100 ps
 
 `define CLOCK_PERIOD 5 // Core clock: <= 1000/16=60 when PLL
-`define OFFCLOCK_PERIOD 100 // 
+`define OFFCLOCK_PERIOD 10 // 
 `define PLL
 `define SIM
 // `define FUNC_SIM
@@ -152,7 +152,7 @@ initial begin
 end
 
 initial begin
-    I_BypAsysnFIFO  = 1'b0;
+    I_BypAsysnFIFO  = 1'b1;
     I_BypOE         = 1'b0;
     I_OffOE         = 1'b0;
     I_SwClk         = 1'b0;
@@ -187,7 +187,7 @@ initial begin
 end
 
 // initial begin
-//     $dumpfile("../../work/synth/TOP/Date230817_0105_Periodclk5_Periodsck10_PLL1_group_Track3vt_MaxDynPwr0_OptWgt0.5_Note_FPS_V9_PLL&REDUCEPAD_8Cores/dump/vcd_period5_range1000clks_InitialBegin.vcd");
+//     $dumpfile("../../work/synth/TOP/Date230907_0107_Periodclk5_Periodsck10_PLL1_group_Track3vt_MaxDynPwr0_OptWgt0.5_Note_FPS_V9_64Cores/dump/vcd_period5_range1000clks_InitialBegin.vcd");
 //     $dumpvars(0,TOP_tb.u_TOP);
 // end
 
@@ -245,7 +245,7 @@ end
 
 `ifdef POST_SIM
     initial begin 
-        $sdf_annotate ("/workspace/home/zhoucc/Proj_HW/PointCloudAcc/hardware/work/synth/TOP/Date230817_2034_Periodclk5_Periodsck10_PLL1_group_Track3vt_MaxDynPwr0_OptWgt0.5_Note_FPS_V9_PLL&REDUCEPAD_4Cores/gate/TOP.sdf", u_TOP, , "TOP_sdf.log", "MAXIMUM", "1.0:1.0:1.0", "FROM_MAXIMUM");
+        $sdf_annotate ("/workspace/home/zhoucc/Proj_HW/PointCloudAcc/hardware/work/synth/TOP/Date230907_0107_Periodclk5_Periodsck10_PLL1_group_Track3vt_MaxDynPwr0_OptWgt0.5_Note_FPS_V9_64Cores/gate/TOP.sdf", u_TOP, , "TOP_sdf.log", "MAXIMUM", "1.0:1.0:1.0", "FROM_MAXIMUM");
     end 
 `endif
 

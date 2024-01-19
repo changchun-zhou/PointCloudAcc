@@ -1,6 +1,6 @@
 
-set SYNTH_PROJDIR = "../../work/synth/TOP/Date230817_2034_Periodclk5_Periodsck10_PLL1_group_Track3vt_MaxDynPwr0_OptWgt0.5_Note_FPS_V9_PLL&REDUCEPAD_4Cores"
-set TCF_DUMP_NAME = "tcf_period5_range10000clks_instance_u_TOP_clkbeginOnlyGIC.dump"
+set SYNTH_PROJDIR = "../../work/synth/TOP/Date230907_0107_Periodclk5_Periodsck10_PLL1_group_Track3vt_MaxDynPwr0_OptWgt0.5_Note_FPS_V9_64Cores"
+set TCF_DUMP_NAME = "tcf_period5_range10000clks_instance_u_TOP_70actFPS_ran.dump"
 
 set NOTE = ${TCF_DUMP_NAME}_report
 set TCF_DUMP = ${SYNTH_PROJDIR}/dump/${TCF_DUMP_NAME}

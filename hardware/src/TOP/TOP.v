@@ -1,17 +1,4 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-/ This is a simple example.
+// This is a simple example.
 // You can make a your own header file and set its path to settings.
 // (Preferences > Package Settings > Verilog Gadget > Settings - User)
 //
@@ -33,9 +20,10 @@ module TOP #(
     // HW-Modules
 
     // FPS
-    parameter NUM_FPC        = 4, 
-    parameter NUMSRAM_RDCRD  = 1, // NUM_FPC/8
-    parameter NUMSRAM_DIST   = 1, // NUM_FPC/8
+    parameter NUM_FPC        = 64, 
+    parameter NUMSRAM_RDCRD  = NUM_FPC/8,
+    parameter NUMSRAM_DIST   = NUM_FPC/8,
+    // parameter NUMSRAM_MASK   = 256/(64*3/4)*2*16核,
     parameter NUMMASK_PROC   = 64, // Reduce BW and Combinational Area
     
     // KNN
@@ -53,8 +41,8 @@ module TOP #(
     parameter SRAM_WIDTH     = 256, 
     parameter SRAM_WORD      = 1024/NUM_FPC/2, // P/Core/2
     parameter ADDR_WIDTH     = 16,
-    parameter GLB_NUM_RDPORT = 5,
-    parameter GLB_NUM_WRPORT = 6, 
+    parameter GLB_NUM_RDPORT = 19,
+    parameter GLB_NUM_WRPORT = 13, 
     parameter NUM_BANK       = NUM_FPC/2, // 32B*Core/2
 
     // CCU
@@ -130,16 +118,16 @@ localparam GLBWRIDX_GICGLB = 0;
 localparam GLBWRIDX_FPSMSK = 1; 
 localparam GLBWRIDX_FPSCRD = 2; 
 localparam GLBWRIDX_FPSDST = 3; 
-localparam GLBWRIDX_FPSIDX = 4; 
-localparam GLBWRIDX_BLKCRD = 5;
+localparam GLBWRIDX_FPSIDX = 11;
+localparam GLBWRIDX_BLKCRD = 12;
 
 localparam GLBRDIDX_GICGLB = 0; 
 localparam GLBRDIDX_FPSMSK = 1; 
 localparam GLBRDIDX_FPSCRD = 2; 
-localparam GLBRDIDX_FPSDST = 3; 
-localparam GLBRDIDX_BLKCRD = 4;
+localparam GLBRDIDX_FPSDST = 10; 
+localparam GLBRDIDX_BLKCRD = 18;
 
-localparam DISTSQR_WIDTH     = CRD_WIDTH*2 + $clog2(CRD_DIM);
+localparam DISTSQR_WIDTH   = CRD_WIDTH*2 + $clog2(CRD_DIM);
 //=====================================================================================================================
 // Variable Definition :
 //=====================================================================================================================
@@ -526,7 +514,7 @@ assign #0.2 {
     TOPGLB_CfgPortOffEmptyFull[GLB_NUM_WRPORT + GLBRDIDX_FPSMSK],
     TOPGLB_CfgPortOffEmptyFull[GLBWRIDX_FPSMSK                 ],
     TOPGLB_CfgPortOffEmptyFull[GLB_NUM_WRPORT + GLBRDIDX_FPSCRD +: NUMSRAM_RDCRD] 
-} = CCUFPS_CfgInfo[FPSISA_WIDTH -1 -: 16];
+} = CCUFPS_CfgInfo[FPSISA_WIDTH -1 -: 32];
 assign #0.2 {
     TOPGLB_CfgPortBankFlag    [GLBWRIDX_FPSCRD                 ],
     TOPGLB_CfgPortBankFlag    [GLBWRIDX_FPSIDX                 ],
@@ -535,7 +523,7 @@ assign #0.2 {
     TOPGLB_CfgPortBankFlag    [GLB_NUM_WRPORT + GLBRDIDX_FPSMSK],
     TOPGLB_CfgPortBankFlag    [GLBWRIDX_FPSMSK                 ],
     TOPGLB_CfgPortBankFlag    [GLB_NUM_WRPORT + GLBRDIDX_FPSCRD+: NUMSRAM_RDCRD] 
-} = CCUFPS_CfgInfo[FPSISA_WIDTH -17 -: NUM_BANK*(4 + NUMSRAM_RDCRD + NUMSRAM_DIST*2)];
+} = CCUFPS_CfgInfo[FPSISA_WIDTH -33 -: NUM_BANK*(4 + NUMSRAM_RDCRD + NUMSRAM_DIST*2)];
 
 assign #0.2 {
     TOPGLB_CfgPortOffEmptyFull[GLB_NUM_WRPORT + GLBRDIDX_BLKCRD],

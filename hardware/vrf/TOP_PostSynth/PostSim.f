@@ -1,9 +1,10 @@
 ../TOP/TOP_tb.v
 ../../src/primitives/COUNTER/counter.v
-/workspace/home/zhoucc/Proj_HW/PointCloudAcc/hardware/work/synth/TOP/Date230817_2034_Periodclk5_Periodsck10_PLL1_group_Track3vt_MaxDynPwr0_OptWgt0.5_Note_FPS_V9_PLL&REDUCEPAD_4Cores/p+r_enc/TOP_synth.v
+/workspace/home/zhoucc/Proj_HW/PointCloudAcc/hardware/work/synth/TOP/Date230907_0107_Periodclk5_Periodsck10_PLL1_group_Track3vt_MaxDynPwr0_OptWgt0.5_Note_FPS_V9_64Cores/p+r_enc/TOP_synth.v
 ../../project/lib/mem/ts1n28hpcpuhdhvtb128x256m1sso_170a/VERILOG/ts1n28hpcpuhdhvtb128x256m1sso_170a_tt0p9v25c.v
 ../../project/lib/mem/ts1n28hpcpuhdhvtb256x8m4sso_170a/VERILOG/ts1n28hpcpuhdhvtb256x8m4sso_170a_tt0p9v25c.v
 ../../project/lib/mem/ts1n28hpcpuhdhvtb32x256m1sso_170a/VERILOG/ts1n28hpcpuhdhvtb32x256m1sso_170a_tt0p9v25c.v
+../../project/lib/mem/ts1n28hpcpuhdhvtb8x256m1sso_170a/VERILOG/ts1n28hpcpuhdhvtb8x256m1sso_170a_tt0p9v25c.v
 ../../project/lib/mem/ts1n28hpcpuhdhvtb64x256m1sso_170a/VERILOG/ts1n28hpcpuhdhvtb64x256m1sso_170a_tt0p9v25c.v
 ../../project/lib/mem/tsdn28hpcpuhdb32x128m4m_170a/VERILOG/tsdn28hpcpuhdb32x128m4m_170a_tt0p9v25c.v
 ../../project/lib/PLL/verilog/PLLTS28HPMFRAC.v
