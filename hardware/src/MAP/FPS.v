@@ -151,7 +151,17 @@ assign {
     CCUFPS_CfgCrdBaseRdAddr,// 16 x 16
     CCUFPS_CfgNop          ,// 16 x 16
     CCUFPS_CfgNip           // 16 x 16
-} = CCUFPS_CfgInfo[FPSISA_WIDTH -1 : 16];
+// } = CCUFPS_CfgInfo[FPSISA_WIDTH -1 : 16];
+} = { 
+    {16{CCUFPS_CfgInfo[16 + 16*24 +: 16*4]}},
+    {16{CCUFPS_CfgInfo[16 + 16*20 +: 16*4]}},
+    {16{CCUFPS_CfgInfo[16 + 16*16 +: 16*4]}},
+    {16{CCUFPS_CfgInfo[16 + 16*12 +: 16*4]}},
+    {16{CCUFPS_CfgInfo[16 + 16*8  +: 16*4]}},
+    {16{CCUFPS_CfgInfo[16 + 16*4  +: 16*4]}},
+    {16{CCUFPS_CfgInfo[16         +: 16*4]}} 
+};
+
 assign CCUFPS_CfgStop = CCUFPS_CfgInfo[9]; //[8]==1: Rst, [9]==1: Stop
 //=====================================================================================================================
 // Logic Design
