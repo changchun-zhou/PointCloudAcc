@@ -137,6 +137,33 @@ module RAM #(
             .Q      ( DO    )
             );
         end
+        else if( SRAM_WORD%128 == 0 && SRAM_BIT == 256 && SRAM_BYTE == 1 && DUAL_PORT == 0)begin
+            `ifdef RTSELDB
+                assign #(DELAY) RTSEL= 2'b10;
+            `else
+                assign #(DELAY) RTSEL= 2'b00;
+            `endif
+            genvar SRAM_i;
+            parameter NUM_128 = SRAM_WORD/128;
+            parameter NUM_128_WIDTH = $clog2(NUM_128);
+            wire [SRAM_BIT*NUM_128 -1: 0] DO_i;
+            wire [ SRAM_ADDR_WIDTH          -1 : 0] A = (&WEB)? AR : AW;
+            for(SRAM_i=0; SRAM_i<NUM_128; SRAM_i=SRAM_i+1) begin
+                TS1N28HPCPUHDHVTB128X256M1SSO GLB_BANK(
+                .SLP    ( 1'b0  ),
+                .SD     ( 1'b0  ),
+                .CLK    ( clk   ),
+                .CEB    ( CSB & (A[7 +: NUM_128_WIDTH] == SRAM_i) ),
+                .WEB    ( WEB & (A[7 +: NUM_128_WIDTH] == SRAM_i) ),
+                .A      ( A[0 +: 6]), // 0-127
+                .D      ( DI    ),
+                .RTSEL  ( RTSEL ),
+                .WTSEL  ( WTSEL ),
+                .Q      ( DO_i[SRAM_BIT*(A[7 +: NUM_128_WIDTH]) +: SRAM_BIT]    )
+                );
+            end
+            assign DO = DO_i[SRAM_BIT*(A[7 +: NUM_128_WIDTH]) +: SRAM_BIT];
+        end
         else if( SRAM_WORD == 8 && SRAM_BIT == 256 && SRAM_BYTE == 1 && DUAL_PORT == 0)begin
             `ifdef RTSELDB
                 assign #(DELAY) RTSEL= 2'b10;
